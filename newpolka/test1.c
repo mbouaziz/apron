@@ -77,8 +77,11 @@ void test_environment()
   ap_environment_free(e4);
   ap_environment_free(e3);
 
-  e4 = ap_environment_remove(e5,name_of_intdim2,4,
-			name_of_realdim2,4);
+  {
+    ap_var_t tvar[8];
+    for(i=0;i<4;i++){ tvar[i]=name_of_intdim2[i]; tvar[4+i]=name_of_realdim2[i]; }
+    e4 = ap_environment_remove(e5,tvar,8);
+  }
   assert(e4==NULL);
 
   e3 = ap_environment_lce(e1,e2,&change1,&change2);
@@ -161,7 +164,7 @@ void absval1(ap_manager_t* man, ap_abstract1_t* ppo1, ap_abstract1_t* ppo2)
   ap_linexpr1_set_cst_scalar_int(&expr,1);
   assert(! ap_linexpr1_set_coeff_scalar_frac(&expr,"x",1,2) );
   assert(! ap_linexpr1_set_coeff_scalar_frac(&expr,"y",2,3) );
-  cons = ap_lincons1_make(AP_CONS_EQ,&expr);
+  cons = ap_lincons1_make(AP_CONS_EQ,&expr,NULL);
   ap_lincons1_fprint(stdout,&cons);fprintf(stdout,"\n");
   ap_lincons1_extend_environment_with(&cons,envXYZW);
   ap_lincons1_fprint(stdout,&cons);fprintf(stdout,"\n");
@@ -174,7 +177,7 @@ void absval1(ap_manager_t* man, ap_abstract1_t* ppo1, ap_abstract1_t* ppo2)
 			   AP_COEFF_S_INT, 2, "w",
 			   AP_END);
   assert(!b);
-  cons = ap_lincons1_make(AP_CONS_SUPEQ,&expr);
+  cons = ap_lincons1_make(AP_CONS_SUPEQ,&expr,NULL);
   ap_lincons1_fprint(stdout,&cons);fprintf(stdout,"\n");
   ap_lincons1_extend_environment_with(&cons,envXYZW);
   ap_lincons1_fprint(stdout,&cons);fprintf(stdout,"\n");
@@ -187,14 +190,14 @@ void absval1(ap_manager_t* man, ap_abstract1_t* ppo1, ap_abstract1_t* ppo2)
 			   AP_COEFF_S_INT, -2, "w",
 			   AP_END);
   assert(!b);
-  cons = ap_lincons1_make(AP_CONS_SUPEQ,&expr);
+  cons = ap_lincons1_make(AP_CONS_SUPEQ,&expr,NULL);
   ap_lincons1_fprint(stdout,&cons);fprintf(stdout,"\n");
   ap_lincons1_extend_environment_with(&cons,envXYZW);
   ap_lincons1_fprint(stdout,&cons);fprintf(stdout,"\n");
   assert(! ap_lincons1_array_set(&array,2,&cons) );
   /* -2<=1/3z-w */
   expr = ap_linexpr1_make(envZW,AP_LINEXPR_SPARSE,2);
-  cons = ap_lincons1_make(AP_CONS_SUPEQ,&expr);
+  cons = ap_lincons1_make(AP_CONS_SUPEQ,&expr,NULL);
   b = ap_lincons1_set_list(&cons,
 			   AP_CST_S_INT,2,
 			   AP_COEFF_S_FRAC, 1, 3, "z",
@@ -210,7 +213,7 @@ void absval1(ap_manager_t* man, ap_abstract1_t* ppo1, ap_abstract1_t* ppo2)
   ap_linexpr1_set_cst_scalar_int(&expr,3);
   assert(! ap_linexpr1_set_coeff_scalar_frac(&expr,"z", -1,3) );
   assert(! ap_linexpr1_set_coeff_scalar_int(&expr,"w", 1) );
-  cons = ap_lincons1_make(AP_CONS_SUPEQ,&expr);
+  cons = ap_lincons1_make(AP_CONS_SUPEQ,&expr,NULL);
   ap_lincons1_fprint(stdout,&cons);fprintf(stdout,"\n");
   ap_lincons1_extend_environment_with(&cons,envXYZW);
   ap_lincons1_fprint(stdout,&cons);fprintf(stdout,"\n");
@@ -384,7 +387,7 @@ void absval1(ap_manager_t* man, ap_abstract1_t* ppo1, ap_abstract1_t* ppo2)
   ap_linexpr1_set_coeff_scalar_int(&expr,"y",-4);
   ap_linexpr1_set_coeff_scalar_int(&expr,"z",1);
   ap_linexpr1_set_coeff_scalar_int(&expr,"w",-1);
-  cons = ap_lincons1_make(AP_CONS_SUPEQ,&expr);
+  cons = ap_lincons1_make(AP_CONS_SUPEQ,&expr,NULL);
 
   itv = ap_abstract1_bound_linexpr(man,&poly,&expr);
   fprintf(stdout,"Bound of ");

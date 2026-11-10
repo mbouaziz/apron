@@ -167,6 +167,7 @@ void poly1(ap_manager_t* man, char** name_of_dim, pk_t** ppo1, pk_t** ppo2)
      u non contraint */
   mpq_t mpq;
   ap_lincons0_t cons;
+  cons.scalar = NULL;
   ap_lincons0_array_t array;
   ap_generator0_array_t garray;
   pk_t* poly;
@@ -459,6 +460,7 @@ void poly2(ap_manager_t* man, char** name_of_dim, pk_t* po1, pk_t* po2)
   pk_t* po;
   ap_linexpr0_t* expr[2];
   ap_lincons0_t cons;
+  cons.scalar = NULL;
   ap_lincons0_array_t array = { &cons, 1 };
   ap_generator0_t gen;
   ap_generator0_array_t garray, garray2;
@@ -912,6 +914,7 @@ pk_t* pk_random(ap_manager_t* man, size_t intdim, size_t realdim,
   ap_lincons0_array_t array;
   long int r;
   ap_lincons0_t cons;
+  cons.scalar = NULL;
   ap_linexpr0_t* expr;
   pk_t* poly;
   size_t i;
@@ -946,6 +949,7 @@ void test_approximate(void)
 {
   ap_linexpr0_t* expr;
   ap_lincons0_t cons;
+  cons.scalar = NULL;
   ap_lincons0_array_t array = { &cons, 1 };
   pk_t* po, *pa;
   pk_internal_t* pk;
@@ -1101,6 +1105,7 @@ void pk_test_check(ap_manager_t* man, size_t intdim, size_t realdim,
   ap_coeff_t* pcoeff;
   ap_interval_t* interval;
   ap_lincons0_t cons;
+  cons.scalar = NULL;
   ap_lincons0_array_t consarray = { &cons, 1 };
   ap_lincons0_array_t array;
   ap_generator0_array_t garray;
