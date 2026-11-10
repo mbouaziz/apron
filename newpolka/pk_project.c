@@ -79,6 +79,8 @@ void poly_projectforget_array(bool project,
       }
       pk_matrix_normalize_row(pk,mat,(size_t)i);
     }
+    /* zeroing entries may break the row order */
+    mat->_sorted = false;
     po->status = 0;
     if (!lazy){
       poly_chernikova(man,po,"of the result");
